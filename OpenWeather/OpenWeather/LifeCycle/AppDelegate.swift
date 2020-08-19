@@ -14,7 +14,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        let defaults = UserDefaults.standard
+        
+        if defaults.bool(forKey: "FirstLaunch") == true {
+            defaults.set(true, forKey: "FirstLaunch")
+        } else {
+            let searchObjectArray = [
+                (city: "Salt Lake City", state: "Utah"),
+                (city: "New York", state: "New York"),
+                (city: "San Francisco", state: "California")
+            ]
+            for object in searchObjectArray {
+                SearchableObjectController.sharedInstance.createSearchableObjectWith(city: object.city, andState: object.state, orZip: nil)
+            }
+            defaults.set(true, forKey: "FirstLaunch")
+        }
         return true
     }
 

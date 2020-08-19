@@ -12,11 +12,13 @@ struct TopLevelWeatherDict: Decodable {
     let name: String?
     let weather: [Weather]
     let tempInfo: Main
+    var searchObject: SearchObject?
     
     private enum CodingKeys: String, CodingKey {
         case name
         case weather
         case tempInfo = "main"
+        case searchObject
     }
 }
 

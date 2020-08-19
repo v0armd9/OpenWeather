@@ -25,6 +25,42 @@ struct WeatherConstants {
 
 class WeatherController {
     
+    static func fetchWithSearchableObjects(searchableObjects: [SearchObject], completion: @escaping (Result<[TopLevelWeatherDict], WeatherError>) -> Void) {
+        var returnedWeatherDicts: [TopLevelWeatherDict] = []
+        let dispatchGroup = DispatchGroup()
+        for object in searchableObjects {
+            if let zipCode = object.zip {
+                dispatchGroup.enter()
+                fetchWeatherBy(zipCode: zipCode) { (result) in
+                    switch result {
+                    case .success(let weatherDict):
+                        returnedWeatherDicts.append(weatherDict)
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                    dispatchGroup.leave()
+                }
+            } else if let city = object.city, let state = object.state {
+                dispatchGroup.enter()
+                fetchWeatherBy(city: city, andState: state) { (result) in
+                   switch result {
+                    case .success(let weatherDict):
+                        returnedWeatherDicts.append(weatherDict)
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                    dispatchGroup.leave()
+                }
+            }
+        }
+        dispatchGroup.notify(queue: .main) {
+            if returnedWeatherDicts.isEmpty {
+                return completion(.failure(.noData))
+            }
+            return completion(.success(returnedWeatherDicts))
+        }
+    }
+    
     static func fetchWeatherBy(city: String, andState state: String, completion: @escaping (Result<TopLevelWeatherDict, WeatherError>) -> Void) {
         guard var baseURL = URL(string: WeatherConstants.baseURLString) else { return completion(.failure(.invalidURL)) }
         baseURL.appendPathComponent(WeatherConstants.dataComponent)

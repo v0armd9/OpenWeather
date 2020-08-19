@@ -10,7 +10,7 @@
         <!--Weather-->
         <scene sceneID="Pb5-8k-HeV">
             <objects>
-                <viewController id="dhu-s0-geM" sceneMemberID="viewController">
+                <viewController id="dhu-s0-geM" customClass="WeatherListViewController" customModule="OpenWeather" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="a8d-F2-nDp">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -28,7 +28,7 @@
                                         <rect key="frame" x="0.0" y="155" width="414" height="653"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="F8P-n3-9YT">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="weatherCell" id="F8P-n3-9YT" customClass="WeatherTableViewCell" customModule="OpenWeather" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="414" height="142"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="F8P-n3-9YT" id="fsG-3q-pkf">
@@ -71,6 +71,9 @@
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
+                                                    <outlet property="cityNameLabel" destination="5wK-20-uhC" id="kqc-BM-Atq"/>
+                                                    <outlet property="currentTempLabel" destination="qt6-0R-BSs" id="IkB-XP-ms9"/>
+                                                    <outlet property="iconImageView" destination="tFu-tL-VPr" id="rAb-TB-UBd"/>
                                                     <segue destination="g04-uS-Uco" kind="show" id="cMs-ng-Ib2"/>
                                                 </connections>
                                             </tableViewCell>
@@ -90,8 +93,16 @@
                         <viewLayoutGuide key="safeArea" id="EaN-wn-lpx"/>
                     </view>
                     <navigationItem key="navigationItem" title="Weather" id="vdJ-dZ-ldS">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="9dn-sj-Gdx"/>
+                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="9dn-sj-Gdx">
+                            <connections>
+                                <action selector="addButtonTapped:" destination="dhu-s0-geM" id="fOb-AE-hzg"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="WeatherListTableView" destination="y82-bB-wN0" id="ibL-pd-KTe"/>
+                        <outlet property="addMenuContainerView" destination="3WX-4H-Srg" id="ssL-lc-BOn"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H5W-2n-2F7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
