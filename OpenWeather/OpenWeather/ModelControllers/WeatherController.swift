@@ -10,7 +10,9 @@ import Foundation
 import UIKit
 
 struct WeatherConstants {
-    fileprivate static let baseURLString = "https://api.openweathermap.org/data/2.5"
+    fileprivate static let baseURLString = "https://api.openweathermap.org/"
+    fileprivate static let dataComponent = "data"
+    fileprivate static let apiVersionComponent = "2.5"
     fileprivate static let weatherComponent = "weather"
     fileprivate static let cityStateQueryName = "q"
     fileprivate static let zipQueryName = "zip"
@@ -25,6 +27,8 @@ class WeatherController {
     
     static func fetchWeatherBy(city: String, andState state: String, completion: @escaping (Result<TopLevelWeatherDict, WeatherError>) -> Void) {
         guard var baseURL = URL(string: WeatherConstants.baseURLString) else { return completion(.failure(.invalidURL)) }
+        baseURL.appendPathComponent(WeatherConstants.dataComponent)
+        baseURL.appendPathComponent(WeatherConstants.apiVersionComponent)
         baseURL.appendPathComponent(WeatherConstants.weatherComponent)
         var urlComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
         let cityStateQuery = URLQueryItem(name: WeatherConstants.cityStateQueryName, value: "\(city),\(state)")
@@ -39,6 +43,8 @@ class WeatherController {
     
     static func fetchWeatherBy(zipCode: Int, completion: @escaping (Result<TopLevelWeatherDict, WeatherError>) -> Void) {
         guard var baseURL = URL(string: WeatherConstants.baseURLString) else { return completion(.failure(.invalidURL)) }
+        baseURL.appendPathComponent(WeatherConstants.dataComponent)
+        baseURL.appendPathComponent(WeatherConstants.apiVersionComponent)
         baseURL.appendPathComponent(WeatherConstants.weatherComponent)
         var urlComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
         let zipCodeQuery = URLQueryItem(name: WeatherConstants.zipQueryName, value: String(zipCode))
