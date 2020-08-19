@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 struct WeatherConstants {
-    fileprivate static let baseURLString = "api.openweathermap.org/data/2.5"
+    fileprivate static let baseURLString = "https://api.openweathermap.org/data/2.5"
     fileprivate static let weatherComponent = "weather"
     fileprivate static let cityStateQueryName = "q"
     fileprivate static let zipQueryName = "zip"
