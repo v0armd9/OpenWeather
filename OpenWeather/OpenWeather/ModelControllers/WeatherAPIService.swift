@@ -40,6 +40,6 @@ class WeatherAPIService {
             guard let data = data else { return completion(.failure(.noData)) }
             guard let retrievedImage = UIImage(data: data) else { return completion(.failure(.imageDecodeError)) }
             return completion(.success(retrievedImage))
-        }
+        }.resume()
     }
 }

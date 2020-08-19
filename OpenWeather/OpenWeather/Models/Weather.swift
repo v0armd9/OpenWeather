@@ -9,8 +9,8 @@
 import Foundation
 
 struct TopLevelWeatherDict: Decodable {
-    let name: String
-    let weather: Weather
+    let name: String?
+    let weather: [Weather]
     let tempInfo: Main
     
     private enum CodingKeys: String, CodingKey {
@@ -21,14 +21,14 @@ struct TopLevelWeatherDict: Decodable {
 }
 
 struct Weather: Decodable {
-    let icon: String
-    let description: String
+    let icon: String?
+    let description: String?
 }
 
 struct Main: Decodable {
-    let temp: Double
-    let low: Double
-    let high: Double
+    let temp: Double?
+    let low: Double?
+    let high: Double?
     
     private enum CodingKeys: String, CodingKey {
         case temp
