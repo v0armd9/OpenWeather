@@ -119,7 +119,7 @@ class WeatherController {
         let zipCodeQuery = URLQueryItem(name: WeatherConstants.zipQueryName, value: String(zipCode))
         let unitsQuery = URLQueryItem(name: WeatherConstants.unitsQueryName, value: WeatherConstants.unitsQueryValue)
         let apiKeyQuery = URLQueryItem(name: WeatherConstants.apiKeyQueryName, value: WeatherConstants.apiKeyValue)
-        urlComponents?.queryItems = [zipCodeQuery, apiKeyQuery]
+        urlComponents?.queryItems = [zipCodeQuery, unitsQuery, apiKeyQuery]
         guard let finalURL = urlComponents?.url else { return completion(.failure(.invalidURL)) }
         
         WeatherAPIService.fetchWeatherWith(url: finalURL) { (result) in
