@@ -37,7 +37,7 @@ class WeatherControllerTests: XCTestCase {
         let expectation = self.expectation(description: "fetchCityState")
         var weatherObject: TopLevelWeatherDict? = nil
         var error: WeatherError? = nil
-        WeatherController.fetchWeatherBy(city: "", andState: "") { (result) in
+        WeatherController.fetchWeatherBy(city: "Mooselookmeguntic", andState: "Maine") { (result) in
             switch result {
             case .success(let retrievedWeatherDict):
                 weatherObject = retrievedWeatherDict

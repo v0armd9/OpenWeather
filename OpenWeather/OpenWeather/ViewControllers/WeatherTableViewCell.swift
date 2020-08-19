@@ -25,7 +25,7 @@ class WeatherTableViewCell: UITableViewCell {
         cityNameLabel.text = weatherDict.name
         if let currentTempDouble = weatherDict.tempInfo.temp {
             let currentTemp = Int(currentTempDouble)
-            currentTempLabel.text = "\(currentTemp)"
+            currentTempLabel.text = "\(currentTemp)° F"
         } else {
             currentTempLabel.text = "No Temp Available"
         }

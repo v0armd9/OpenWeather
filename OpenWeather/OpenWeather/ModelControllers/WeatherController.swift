@@ -16,6 +16,8 @@ struct WeatherConstants {
     fileprivate static let weatherComponent = "weather"
     fileprivate static let cityStateQueryName = "q"
     fileprivate static let zipQueryName = "zip"
+    fileprivate static let unitsQueryName = "units"
+    fileprivate static let unitsQueryValue = "imperial"
     fileprivate static let apiKeyQueryName = "appid"
     fileprivate static let apiKeyValue = "da65fafb6cb9242168b7724fb5ab75e7"
     fileprivate static let iconImageComponent = "img"
@@ -33,7 +35,8 @@ class WeatherController {
                 dispatchGroup.enter()
                 fetchWeatherBy(zipCode: zipCode) { (result) in
                     switch result {
-                    case .success(let weatherDict):
+                    case .success(var weatherDict):
+                        weatherDict.searchObject = object
                         returnedWeatherDicts.append(weatherDict)
                     case .failure(let error):
                         print(error.localizedDescription)
@@ -44,7 +47,8 @@ class WeatherController {
                 dispatchGroup.enter()
                 fetchWeatherBy(city: city, andState: state) { (result) in
                    switch result {
-                    case .success(let weatherDict):
+                    case .success(var weatherDict):
+                        weatherDict.searchObject = object
                         returnedWeatherDicts.append(weatherDict)
                     case .failure(let error):
                         print(error.localizedDescription)
@@ -61,6 +65,34 @@ class WeatherController {
         }
     }
     
+    static func fetchWithSingleSearchObject(searchObject: SearchObject, completion: @escaping (Result<TopLevelWeatherDict, WeatherError>) -> Void) {
+        if let zipCode = searchObject.zip {
+            fetchWeatherBy(zipCode: zipCode) { (result) in
+                switch result {
+                case .success(var weatherDict):
+                    weatherDict.searchObject = searchObject
+                    return completion(.success(weatherDict))
+                case .failure(let error):
+                    print(error.localizedDescription)
+                    SearchableObjectController.sharedInstance.deleteSearchableObject(searchObject: searchObject)
+                    return completion(.failure(.dataTaskError(error)))
+                }
+            }
+        } else if let city = searchObject.city, let state = searchObject.state {
+            fetchWeatherBy(city: city, andState: state) { (result) in
+               switch result {
+                case .success(var weatherDict):
+                    weatherDict.searchObject = searchObject
+                    return completion(.success(weatherDict))
+               case .failure(let error):
+                    print(error.localizedDescription)
+                    SearchableObjectController.sharedInstance.deleteSearchableObject(searchObject: searchObject)
+                    return completion(.failure(.dataTaskError(error)))
+                }
+            }
+        }
+    }
+    
     static func fetchWeatherBy(city: String, andState state: String, completion: @escaping (Result<TopLevelWeatherDict, WeatherError>) -> Void) {
         guard var baseURL = URL(string: WeatherConstants.baseURLString) else { return completion(.failure(.invalidURL)) }
         baseURL.appendPathComponent(WeatherConstants.dataComponent)
@@ -68,8 +100,9 @@ class WeatherController {
         baseURL.appendPathComponent(WeatherConstants.weatherComponent)
         var urlComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
         let cityStateQuery = URLQueryItem(name: WeatherConstants.cityStateQueryName, value: "\(city),\(state)")
+        let unitsQuery = URLQueryItem(name: WeatherConstants.unitsQueryName, value: WeatherConstants.unitsQueryValue)
         let apiKeyQuery = URLQueryItem(name: WeatherConstants.apiKeyQueryName, value: WeatherConstants.apiKeyValue)
-        urlComponents?.queryItems = [cityStateQuery, apiKeyQuery]
+        urlComponents?.queryItems = [cityStateQuery, unitsQuery, apiKeyQuery]
         guard let finalURL = urlComponents?.url else { return completion(.failure(.invalidURL)) }
         
         WeatherAPIService.fetchWeatherWith(url: finalURL) { (result) in
@@ -84,6 +117,7 @@ class WeatherController {
         baseURL.appendPathComponent(WeatherConstants.weatherComponent)
         var urlComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
         let zipCodeQuery = URLQueryItem(name: WeatherConstants.zipQueryName, value: String(zipCode))
+        let unitsQuery = URLQueryItem(name: WeatherConstants.unitsQueryName, value: WeatherConstants.unitsQueryValue)
         let apiKeyQuery = URLQueryItem(name: WeatherConstants.apiKeyQueryName, value: WeatherConstants.apiKeyValue)
         urlComponents?.queryItems = [zipCodeQuery, apiKeyQuery]
         guard let finalURL = urlComponents?.url else { return completion(.failure(.invalidURL)) }

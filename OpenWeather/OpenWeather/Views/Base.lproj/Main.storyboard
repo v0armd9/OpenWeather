@@ -21,7 +21,7 @@
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3WX-4H-Srg">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="155"/>
                                         <connections>
-                                            <segue destination="jAv-P9-Rpi" kind="embed" id="oEY-xe-WLn"/>
+                                            <segue destination="jAv-P9-Rpi" kind="embed" identifier="toAddLocation" id="oEY-xe-WLn"/>
                                         </connections>
                                     </containerView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="y82-bB-wN0">
@@ -74,7 +74,7 @@
                                                     <outlet property="cityNameLabel" destination="5wK-20-uhC" id="kqc-BM-Atq"/>
                                                     <outlet property="currentTempLabel" destination="qt6-0R-BSs" id="IkB-XP-ms9"/>
                                                     <outlet property="iconImageView" destination="tFu-tL-VPr" id="rAb-TB-UBd"/>
-                                                    <segue destination="g04-uS-Uco" kind="show" id="cMs-ng-Ib2"/>
+                                                    <segue destination="g04-uS-Uco" kind="show" identifier="toDetailView" id="cMs-ng-Ib2"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
@@ -108,10 +108,10 @@
             </objects>
             <point key="canvasLocation" x="-554" y="-326"/>
         </scene>
-        <!--View Controller-->
+        <!--Weather Detail View Controller-->
         <scene sceneID="2y1-ST-Bkc">
             <objects>
-                <viewController id="g04-uS-Uco" sceneMemberID="viewController">
+                <viewController id="g04-uS-Uco" customClass="WeatherDetailViewController" customModule="OpenWeather" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JkL-Tb-EPe">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -204,6 +204,14 @@
                         <viewLayoutGuide key="safeArea" id="Jxr-Dh-H8l"/>
                     </view>
                     <navigationItem key="navigationItem" id="r7g-2h-nQ6"/>
+                    <connections>
+                        <outlet property="cityNameLabel" destination="8H4-Dq-xmN" id="mo9-g8-AuG"/>
+                        <outlet property="currentTempLabel" destination="qc6-6I-2KH" id="AIX-kb-E1y"/>
+                        <outlet property="highTempLabel" destination="mOF-Lh-6sT" id="Tqm-qf-XZy"/>
+                        <outlet property="iconImageView" destination="mwz-vL-jmz" id="wRR-Nh-Y4b"/>
+                        <outlet property="lowTempLabel" destination="IdS-B6-dPo" id="aNv-eB-J2G"/>
+                        <outlet property="weatherDescriptionLabel" destination="AjK-8P-hHh" id="Nqt-1w-Cfr"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZcN-zn-BuK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -225,10 +233,10 @@
             </objects>
             <point key="canvasLocation" x="-1445" y="-326"/>
         </scene>
-        <!--View Controller-->
+        <!--Add Location View Controller-->
         <scene sceneID="oL6-gG-XJd">
             <objects>
-                <viewController id="jAv-P9-Rpi" sceneMemberID="viewController">
+                <viewController id="jAv-P9-Rpi" customClass="AddLocationViewController" customModule="OpenWeather" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hv9-5g-1mY">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="155"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -239,9 +247,12 @@
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="xLS-eR-eSM">
                                         <rect key="frame" x="0.0" y="0.0" width="398" height="40"/>
                                         <segments>
-                                            <segment title="First"/>
-                                            <segment title="Second"/>
+                                            <segment title="City, State"/>
+                                            <segment title="Zip Code"/>
                                         </segments>
+                                        <connections>
+                                            <action selector="searchTypeSegmentValueChanged:" destination="jAv-P9-Rpi" eventType="valueChanged" id="9LK-gJ-7p5"/>
+                                        </connections>
                                     </segmentedControl>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kNH-hs-tgU">
                                         <rect key="frame" x="0.0" y="39" width="398" height="38.5"/>
@@ -256,6 +267,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qLE-Kj-ptT">
                                         <rect key="frame" x="0.0" y="116.5" width="398" height="38.5"/>
                                         <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="addLocationButtonTapped:" destination="jAv-P9-Rpi" eventType="touchUpInside" id="jQz-tM-ujH"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -267,7 +281,14 @@
                             <constraint firstAttribute="bottom" secondItem="fnT-Oq-v3J" secondAttribute="bottom" id="DIF-cf-Jsl"/>
                             <constraint firstItem="fnT-Oq-v3J" firstAttribute="top" secondItem="hv9-5g-1mY" secondAttribute="top" id="GsY-N3-JDM"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="cfV-Ow-raN"/>
                     </view>
+                    <connections>
+                        <outlet property="addLocationButton" destination="qLE-Kj-ptT" id="yqz-1e-jyg"/>
+                        <outlet property="cityZipTextField" destination="kNH-hs-tgU" id="Ptk-8u-CSg"/>
+                        <outlet property="searchTypeSegmentedControl" destination="xLS-eR-eSM" id="djF-aa-LLe"/>
+                        <outlet property="stateTextField" destination="j1u-Mo-weG" id="qMa-HQ-BZ9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ser-g4-kSQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
