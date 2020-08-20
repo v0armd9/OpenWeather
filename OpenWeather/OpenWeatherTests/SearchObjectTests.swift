@@ -27,6 +27,8 @@ class SearchObjectTests: XCTestCase {
         XCTAssertEqual(newObjectZip.zip, 84047)
         XCTAssertNotEqual(countBefore, countAfterSecond)
         XCTAssertEqual(countAfter + 1, countAfterSecond)
+        SearchableObjectController.sharedInstance.deleteSearchableObject(searchObject: newObjectCity)
+        SearchableObjectController.sharedInstance.deleteSearchableObject(searchObject: newObjectZip)
     }
     
     func testDeleteSearchableObject() {
@@ -58,6 +60,7 @@ class SearchObjectTests: XCTestCase {
         XCTAssertNotNil(weatherDict)
         XCTAssertEqual(weatherDict?.name, "Midvale")
         XCTAssertNil(error)
+        SearchableObjectController.sharedInstance.deleteSearchableObject(searchObject: newObjectCity)
     }
     
     func testFailedSearchWithSingleObject() {
@@ -100,6 +103,8 @@ class SearchObjectTests: XCTestCase {
         XCTAssertNotNil(weatherDictArray)
         XCTAssertEqual(weatherDictArray?.count, 2)
         XCTAssertNil(error)
+        SearchableObjectController.sharedInstance.deleteSearchableObject(searchObject: newObjectCity)
+        SearchableObjectController.sharedInstance.deleteSearchableObject(searchObject: newObjectZip)
     }
     
     func testPartialFailedSearchWithArrayObject() {
@@ -122,6 +127,7 @@ class SearchObjectTests: XCTestCase {
         XCTAssertNotNil(weatherDictArray)
         XCTAssertEqual(weatherDictArray?.count, 1)
         XCTAssertNil(error)
+        SearchableObjectController.sharedInstance.deleteSearchableObject(searchObject: newObjectZip)
     }
     
     func testFailedSearchWithArrayObject() {
