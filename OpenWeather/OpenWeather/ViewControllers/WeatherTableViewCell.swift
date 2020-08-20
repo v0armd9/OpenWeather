@@ -38,7 +38,7 @@ class WeatherTableViewCell: UITableViewCell {
                         self.iconImageView.image = image
                     }
                 case .failure(let error):
-                    print(error.localizedDescription)
+                    print(error.errorDescription)
                 }
             }
         }

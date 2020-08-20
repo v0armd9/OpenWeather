@@ -81,7 +81,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
                     }
                     self.feedbackDelegate?.addWeatherDictToArray(weatherDict)
                 case .failure(let error):
-                    self.feedbackDelegate?.presentAlertWithMessage("Please check the city and state name again. There was an error: \(error.localizedDescription)")
+                    self.feedbackDelegate?.presentAlertWithMessage("Please check the city and state name again. There was an error: \(error.errorDescription)")
                 }
             }
             
@@ -98,7 +98,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
                     }
                     self.feedbackDelegate?.addWeatherDictToArray(weatherDict)
                 case .failure(let error):
-                    self.feedbackDelegate?.presentAlertWithMessage("Please check the zip code. There was an error: \(error.localizedDescription)")
+                    self.feedbackDelegate?.presentAlertWithMessage("Please check the zip code. There was an error: \(error.errorDescription)")
                 }
             }
         }
