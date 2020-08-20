@@ -11,6 +11,13 @@ import UIKit
 
 class WeatherAPIService {
     
+    /**
+     This function calls the OpenWeatherAPI to retrieve JSON and decode it into a `TopLevelWeatherDict`.
+     
+     ### The function will either complete with a TopLevelWeatherDict or a WeatherError.
+     - Parameter url: A `URL` constructed in the WeatherController fetch functions
+     - Parameter completion: Completes with either a `TopLevelWeatherDict` or a `WeatherError`.
+     */
     static func fetchWeatherWith(url: URL, completion: @escaping (Result<TopLevelWeatherDict, WeatherError>) -> Void) {
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let response = response {
@@ -29,6 +36,12 @@ class WeatherAPIService {
         }.resume()
     }
     
+    /**
+     This function retrieves an iconImage based on a code passed into the url from the WeatherController's fetchWeatherIcon function
+     ### The function will either complete with a UIImage or a WeatherError
+     - Parameter url: A `URL` contructed in the WeatherController fetchWeatherIcon function
+     - Parameter completion: Completes with either a `UIImage` or a `WeatherError`.
+     */
     static func fetchIconImageWith(url: URL, completion: @escaping (Result<UIImage, WeatherError>) -> Void) {
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let response = response {

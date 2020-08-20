@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+// MARK: - String Constants
 struct WeatherConstants {
     fileprivate static let baseURLString = "https://api.openweathermap.org/"
     fileprivate static let dataComponent = "data"
@@ -27,6 +28,14 @@ struct WeatherConstants {
 
 class WeatherController {
     
+    // MARK: - Fetch Functions
+    
+    /**
+     This function fetches the `TopLevelWeatherDicts` using an array of `SearchObject`
+     ### This function is used for fetching the saved searchObjects at launch
+     - Parameter searchableObjects: An array of `SearchObject` to be looped through and used in a fetch from the API
+     - Parameter completion: Completes with either an array of `TopLevelWeatherDict` or a `WeatherError`
+     */
     static func fetchWithSearchableObjects(searchableObjects: [SearchObject], completion: @escaping (Result<[TopLevelWeatherDict], WeatherError>) -> Void) {
         var returnedWeatherDicts: [TopLevelWeatherDict] = []
         let dispatchGroup = DispatchGroup()
@@ -65,6 +74,12 @@ class WeatherController {
         }
     }
     
+    /**
+    This function fetches the `TopLevelWeatherDict` using a single`SearchObject`
+    ### This function is used for fetching a newly created searchObject
+    - Parameter searchObject: A `SearchObject` used in a fetch from the API
+    - Parameter completion: Completes with either a`TopLevelWeatherDict` or a `WeatherError`
+    */
     static func fetchWithSingleSearchObject(searchObject: SearchObject, completion: @escaping (Result<TopLevelWeatherDict, WeatherError>) -> Void) {
         if let zipCode = searchObject.zip {
             fetchWeatherBy(zipCode: zipCode) { (result) in
@@ -93,6 +108,12 @@ class WeatherController {
         }
     }
     
+    /**
+    This function fetches the `TopLevelWeatherDicts` using a city and state `String` value
+    - Parameter city: A `String` added to the URL constructed for the API call
+    - Parameter state: A `String` added to the URL constructed for the API call
+    - Parameter completion: Completes with either a`TopLevelWeatherDict` or a `WeatherError`
+    */
     static func fetchWeatherBy(city: String, andState state: String, completion: @escaping (Result<TopLevelWeatherDict, WeatherError>) -> Void) {
         guard var baseURL = URL(string: WeatherConstants.baseURLString) else { return completion(.failure(.invalidURL)) }
         baseURL.appendPathComponent(WeatherConstants.dataComponent)
@@ -110,6 +131,11 @@ class WeatherController {
         }
     }
     
+    /**
+    This function fetches the `TopLevelWeatherDicts` using a zipCode `Int` value
+    - Parameter zipCode: An `Int` added to the URL constructed for the API call
+    - Parameter completion: Completes with either a`TopLevelWeatherDict` or a `WeatherError`
+    */
     static func fetchWeatherBy(zipCode: Int, completion: @escaping (Result<TopLevelWeatherDict, WeatherError>) -> Void) {
         guard var baseURL = URL(string: WeatherConstants.baseURLString) else { return completion(.failure(.invalidURL)) }
         baseURL.appendPathComponent(WeatherConstants.dataComponent)
@@ -127,6 +153,11 @@ class WeatherController {
         }
     }
     
+    /**
+    This function fetches the `UIImage` using an iconCode `String` value
+    - Parameter iconCode: A `String` added to the URL constructed for the API call
+    - Parameter completion: Completes with either a`TopLevelWeatherDict` or a `WeatherError`
+    */
     static func fetchWeatherIcon(iconCode: String, completion: @escaping (Result<UIImage, WeatherError>) -> Void) {
         guard var baseURL = URL(string: WeatherConstants.baseURLString) else { return completion(.failure(.invalidURL)) }
         baseURL.appendPathComponent(WeatherConstants.iconImageComponent)

@@ -10,14 +10,26 @@ import Foundation
 
 class SearchableObjectController {
     
+    // MARK: - Shared Instance
     static let sharedInstance = SearchableObjectController()
     
+    // search objects created by the user
     var searchableObjects: [SearchObject] = []
     
     init() {
         loadFromPersistentStore()
     }
     
+    // MARK: - CRUD Functions
+    /**
+     This function creates a searchObject, appends it to the searchableObjects array on the sharedInstance and calls saveToPersistentStore. The result of this function is discardable.
+     ### There will only ever be a city and state passed in or a zipCode, never all three.
+     - Parameter city: A city name represented by a `String` value
+     - Parameter state: A state name represented by a `String` value
+     - Parameter zip: A zip code represented by an `Int` value
+     
+     - Returns: A `SearchObject` created from the passed in parameters
+     */
     @discardableResult
     func createSearchableObjectWith(city: String?, andState state: String?, orZip zip: Int?) -> SearchObject {
         let newSearchObject = SearchObject(city: city, state: state, zip: zip)
@@ -26,6 +38,10 @@ class SearchableObjectController {
         return newSearchObject
     }
     
+    /**
+     This function removes the passed in search object from the searchableObjects array on the SearchableObjectController.sharedInstance
+     - Parameter searchObject: The `SearchObject` to be removed
+     */
     func deleteSearchableObject(searchObject: SearchObject) {
         if let index = searchableObjects.firstIndex(of: searchObject) {
             self.searchableObjects.remove(at: index)
@@ -33,17 +49,20 @@ class SearchableObjectController {
         saveToPersistentStore()
     }
     
+    /**
+     This function creates a fileURL to save the users searchObjects at in JSON format
+     - Returns: A `URL` to be used in the save and load functions.
+     */
     func fileURL() -> URL {
-        
-        //Get the array of paths
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        //specify the first path
         let fullURL = paths[0].appendingPathComponent("searchObjects.json")
       
         return fullURL
     }
     
-    //Save the data at that URL.
+    /**
+     This function saves the searchableObjects array as JSON at the provided URL.
+     */
     func saveToPersistentStore() {
         let encoder = JSONEncoder()
         do {
@@ -54,7 +73,9 @@ class SearchableObjectController {
         }
     }
     
-    //Fetch the data from that URL.
+    /**
+     This function loads and decodes the JSON file into an array of `SearchObjects` and assigns that array to the searchableObjects array on the sharedInstance.
+     */
     func loadFromPersistentStore() {
         let decoder = JSONDecoder()
         do {
