@@ -39,7 +39,7 @@ class WeatherController {
                         weatherDict.searchObject = object
                         returnedWeatherDicts.append(weatherDict)
                     case .failure(let error):
-                        print(error.localizedDescription)
+                        print(error.errorDescription)
                     }
                     dispatchGroup.leave()
                 }
@@ -51,7 +51,7 @@ class WeatherController {
                         weatherDict.searchObject = object
                         returnedWeatherDicts.append(weatherDict)
                     case .failure(let error):
-                        print(error.localizedDescription)
+                        print(error.errorDescription)
                     }
                     dispatchGroup.leave()
                 }
@@ -73,7 +73,7 @@ class WeatherController {
                     weatherDict.searchObject = searchObject
                     return completion(.success(weatherDict))
                 case .failure(let error):
-                    print(error.localizedDescription)
+                    print(error.errorDescription)
                     SearchableObjectController.sharedInstance.deleteSearchableObject(searchObject: searchObject)
                     return completion(.failure(.dataTaskError(error)))
                 }
@@ -85,7 +85,7 @@ class WeatherController {
                     weatherDict.searchObject = searchObject
                     return completion(.success(weatherDict))
                case .failure(let error):
-                    print(error.localizedDescription)
+                    print(error.errorDescription)
                     SearchableObjectController.sharedInstance.deleteSearchableObject(searchObject: searchObject)
                     return completion(.failure(.dataTaskError(error)))
                 }

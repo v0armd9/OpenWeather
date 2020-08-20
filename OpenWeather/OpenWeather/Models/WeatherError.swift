@@ -14,4 +14,19 @@ enum WeatherError: LocalizedError {
     case jsonDecodeError(Error)
     case imageDecodeError
     case invalidURL
+    
+    var errorDescription: String {
+        switch self {
+        case .dataTaskError(let error):
+            return error.localizedDescription
+        case .noData:
+            return "No data was returned from the weather service"
+        case .jsonDecodeError(let error):
+            return error.localizedDescription
+        case .imageDecodeError:
+            return "We were unable to fetch an image"
+        case .invalidURL:
+            return "There was a problem with the URL passed to the weather service"
+        }
+    }
 }

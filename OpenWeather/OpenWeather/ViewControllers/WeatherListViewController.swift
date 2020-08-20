@@ -56,7 +56,7 @@ class WeatherListViewController: UIViewController, UITableViewDelegate, UITableV
                     self.WeatherListTableView.reloadData()
                 }
             case .failure(let error):
-                print(error.localizedDescription)
+                print(error.errorDescription)
             }
         }
     }
