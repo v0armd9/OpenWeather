@@ -34,7 +34,7 @@ struct Main: Decodable {
     
     private enum CodingKeys: String, CodingKey {
         case temp
-        case low = "min_temp"
-        case high = "max_temp"
+        case low = "temp_min"
+        case high = "temp_max"
     }
 }
